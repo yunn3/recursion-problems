@@ -1,0 +1,36 @@
+{
+    "name": "python-dev",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "[python]": {
+                    "editor.formatOnSave": true,
+                    "editor.defaultFormatter": "ms-python.black-formatter",
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports.ruff": "explicit"
+                    }
+                },
+                "ruff.lint.args": [
+                    "--select=E,W,F,B,I,N,A,UP,C4,PL,PD,NPY,C90,COM"
+                ]
+            },
+            "extensions": [
+                "oderwat.indent-rainbow",
+                "ms-python.black-formatter",
+                "charliermarsh.ruff",
+                "KevinRose.vsc-python-indent"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.12"
+        },
+        "ghcr.io/devcontainers-contrib/features/poetry:latest": {}
+    },
+    "postCreateCommand": "/bin/bash ${containerWorkspaceFolder}/.devcontainer/setup.sh"
+}
