@@ -2,8 +2,7 @@ def minAndMax(intArr: list) -> list:
 
     result = []
 
-    intlist = intArr
-    sorted_list = sorted(intlist)
+    sorted_list = sorted(intArr)
     except_min_list = sorted_list[1:]
     except_max_list = sorted_list[:-1]
 
@@ -24,6 +23,3 @@ def calcTotalPrice(purchase_list: list) -> int:
         total_price += price
 
     return total_price
-
-
-print(minAndMax([5, 3, 2, 3, 4]))
