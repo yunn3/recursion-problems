@@ -1,6 +1,2 @@
-def main():
-    print("Hello world")
-
-
-if __name__ == "__main__":
-    main()
+lower_alphabets = ord("a", "z")
+print(lower_alphabets)

@@ -36,7 +36,3 @@ def calcSumofCardsNum(cards: list) -> int:
         total += card_value[card]
 
     return total
-
-
-# 25,33
-winnerBlackjack(["♥7", "♦10", "♦8"], ["♥Q", "♥7", "♦2", "♣Q"])
