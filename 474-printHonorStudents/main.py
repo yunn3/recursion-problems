@@ -36,22 +36,23 @@ class Classroom:
         return len(self.students)
 
 
-def printHonorStudents(school: Classroom) -> str:
-    honors = ["", ""]
-    highest_grade = 0
+def printHonorStudents(school: list) -> str:
+    honor_grade = 10
     class_num = 0
+
     for classroom in school:
         for (
             student
-        ) in classroom:  # student = ex) Student("AC-343424", "James", "Smith", 6)
-            if student[4] > highest_grade:
-                honors[class_num] = student
-            print(
-                honors[class_num].getStudentInfo()
-                + " from "
-                + school[class_num][3]
-                + "'s class",
-            )
+        ) in (
+            classroom.students
+        ):  # student = ex) Student("AC-343424", "James", "Smith", 6)
+            if student.gradeLevel >= honor_grade:
+                print(
+                    student.getStudentInfo()
+                    + " from "
+                    + classroom.teacher
+                    + "'s class",
+                )
 
 
 classroom1 = Classroom(
@@ -76,4 +77,4 @@ classroom2 = Classroom(
 
 school = [classroom1, classroom2]
 
-print(printHonorStudents(school))
+printHonorStudents(school)
