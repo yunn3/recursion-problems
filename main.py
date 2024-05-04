@@ -1,12 +1,9 @@
-def test(hoge) -> None:
-    x = 0
-    y = 0
+def test(string):
 
-    x += hoge
-    y -= hoge
-    print("==", "!=", "<=", ">=")
+    dic = {"IV": 4, "V": 5, "I": 1}
 
-    return x + y
+    while True:
+        if 
+        
 
-
-print(test(1))
+print(test("VIVV"))
