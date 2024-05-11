@@ -1,11 +1,7 @@
 def shuffledPositions(arr: list[int], shuffledArr: list[int]) -> list[int]:
-    after_dict = {number: index for index, number in enumerate(shuffledArr)}
-    after_arr = []
+    shuffled_dict = {number: index for index, number in enumerate(shuffledArr)}
 
-    for before_num in arr:
-        after_arr.append(after_dict[before_num])
-
-    return after_arr
+    return [shuffled_dict[before_num] for before_num in arr]
 
 
 print(
