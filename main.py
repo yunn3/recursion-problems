@@ -7,3 +7,8 @@ def test(string):
         
 
 print(test("VIVV"))
+def isPangram(string):
+    
+def isTest(number):
+    
+    
