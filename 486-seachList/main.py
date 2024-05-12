@@ -1,10 +1,19 @@
 def seachList(numList: list[int], value: int) -> int:
-    search_dict = {number: index for index, number in enumerate(numList)}
-    output = search_dict.get(value)
-    if output is None:
-        return -1
+    """
+    numList = [3,10,23...3,4]
+    num_dict = {
+        3: 0,
+        10:1,
+        23:3,
+        ...
+    }
+    """
 
-    return output
+    search_dict = {}
+    for index, num in enumerate(numList):
+        search_dict.setdefault(num, index)
+
+    return search_dict[value] if search_dict.get(value) is not None else -1
 
 
-print(seachList([3, 10, 23, 3, 4, 50, 2, 3, 4, 18, 6, 1, -2], 23))
+print(seachList([3, 10, 23, 3, 4, 50, 2, 3, 4, 18, 6, 1, -2], 3))
