@@ -4,8 +4,10 @@ from collections import defaultdict
 def twoSum(intArr: list[int], sumInt: int) -> list:
     hash_map = defaultdict(int)
     length_intArr = len(intArr)
-
     for augend_index in range(length_intArr - 1):
+
+        # hash_mapにaugend_indexの要素がなければ計算、
+        # 重複計算を回避するためrangeの第一引数はaugend_index + 1
         if intArr[augend_index] not in hash_map:
             for addend_index in range(augend_index + 1, length_intArr):
                 if intArr[augend_index] + intArr[addend_index] == sumInt:
