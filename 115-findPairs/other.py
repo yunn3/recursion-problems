@@ -7,4 +7,4 @@ def findPairs(numbers: list[int]) -> list[int]:
     for num in numbers:
         num_count_map[num] += 1
 
-    return sorted(key for key in num_count_map.keys() if num_count_map[key] == 2)
+    return sorted(num for num, count in num_count_map.items() if count == 2)
