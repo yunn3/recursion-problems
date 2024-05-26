@@ -1,14 +1,31 @@
 from collections import defaultdict
 
 
+class Card:
+    PICTURE_CARDS_TABLE = {"A": 1, "J": 11, "Q": 12, "K": 13}
+
+    def __init__(self, card_str: str) -> None:
+        self.suit = card_str[0]
+        self.sign = card_str[1:]
+        self.num = self.convert_sign_2_num(self.sign)
+
+    @staticmethod
+    def convert_sign_2_num(sign: str) -> int:
+        if sign in Card.PICTURE_CARDS_TABLE:
+            return Card.PICTURE_CARDS_TABLE[sign]
+
+        else:
+            return int(sign)
+
+
 def winnerPairOfCards(player1: list[str], player2: list[str]) -> str:
     player1_hand_arr = generate_int_hand(player1)
     player2_hand_arr = generate_int_hand(player2)
 
     card_level_arr = [1, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
 
-    player1_countmap = generate_countmap(player1_hand_arr, card_level_arr)
-    player2_countmap = generate_countmap(player2_hand_arr, card_level_arr)
+    player1_countmap = generate_countmap(player1_hand_arr)
+    player2_countmap = generate_countmap(player2_hand_arr)
 
     match_winner = "draw"
     max_pair_num = 0
@@ -45,7 +62,7 @@ def generate_int_hand(cards: list[str]) -> list[int]:
     return hand_arr
 
 
-def generate_countmap(hand_arr: list[int], card_level_arr: list[int]) -> dict[int]:
+def generate_countmap(hand_arr: list[int]) -> dict[int]:
     countmap = defaultdict(int)
 
     for card in hand_arr:
@@ -54,4 +71,4 @@ def generate_countmap(hand_arr: list[int], card_level_arr: list[int]) -> dict[in
     return countmap
 
 
-print(winnerPairOfCards(["♣4", "♥7", "♥7", "♠Q", "♣J"], ["♥7", "♥7", "♣K", "♠Q", "♦2"]))
+# print(winnerPairOfCards(["♣4", "♥7", "♥7", "♠Q", "♣J"], ["♥7", "♥7", "♣K", "♠Q", "♦2"]))
