@@ -28,71 +28,54 @@ class Hand:
         self.card_num_count_map[card.num] += 1
 
 
-card1 = Card("♦A")
-card2 = Card("♥Q")
-card3 = Card("♦Q")
-hand = Hand()
-hand.add(card1)
-hand.add(card2)
-hand.add(card3)
-for card in hand.cards:
-    print(card.suit, card.sign, card.num)
+class HandHelper:
+    @staticmethod
+    def convert_from_card_str_arr(card_str_arr: list) -> Hand:
+        hand = Hand()
+        for card_str in card_str_arr:
+            card = Card(card_str)
+            hand.add(card)
 
-for card_num, count in hand.card_num_count_map.items():
-    print(card_num, count)
+        return hand
+
+
+class PairOfCards:
+    CARD_LEVEL_ARR = [1, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
+
+    def __init__(self, player1_hand: Hand, player2_hand: Hand) -> None:
+        self.player1_hand = player1_hand
+        self.player2_hand = player2_hand
+
+    def get_winner(self) -> str:
+        match_winner = "draw"
+        max_pair_num = 0
+        player1_count_map = self.player1_hand.card_num_count_map
+        player2_count_map = self.player2_hand.card_num_count_map
+
+        for card_num in self.CARD_LEVEL_ARR:
+            if (
+                player1_count_map[card_num] > player2_count_map[card_num]
+                and player1_count_map[card_num] > max_pair_num
+            ):
+                match_winner = "player1"
+                max_pair_num = player1_count_map[card_num]
+
+            elif (
+                player1_count_map[card_num] < player2_count_map[card_num]
+                and player2_count_map[card_num] > max_pair_num
+            ):
+                match_winner = "player2"
+                max_pair_num = player2_count_map[card_num]
+
+        return match_winner
 
 
 def winnerPairOfCards(player1: list[str], player2: list[str]) -> str:
-    player1_hand_arr = generate_int_hand(player1)
-    player2_hand_arr = generate_int_hand(player2)
+    player1_hand = HandHelper.convert_from_card_str_arr(player1)
+    player2_hand = HandHelper.convert_from_card_str_arr(player2)
+    pair_of_cards = PairOfCards(player1_hand, player2_hand)
 
-    card_level_arr = [1, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
-
-    player1_countmap = generate_countmap(player1_hand_arr)
-    player2_countmap = generate_countmap(player2_hand_arr)
-
-    match_winner = "draw"
-    max_pair_num = 0
-
-    for card_num in card_level_arr:
-        if (
-            player1_countmap[card_num] > player2_countmap[card_num]
-            and player1_countmap[card_num] > max_pair_num
-        ):
-            match_winner = "player1"
-            max_pair_num = player1_countmap[card_num]
-
-        elif (
-            player1_countmap[card_num] < player2_countmap[card_num]
-            and player2_countmap[card_num] > max_pair_num
-        ):
-            match_winner = "player2"
-            max_pair_num = player2_countmap[card_num]
-
-    return match_winner
+    return pair_of_cards.get_winner()
 
 
-def generate_int_hand(cards: list[str]) -> list[int]:
-
-    picture_card = {"A": 1, "J": 11, "Q": 12, "K": 13}
-    hand_arr = []
-    for card_num in cards:
-
-        if card_num[1:] in picture_card:
-            hand_arr.append(picture_card[card_num[1:]])
-        else:
-            hand_arr.append(int(card_num[1:]))
-
-    return hand_arr
-
-
-def generate_countmap(hand_arr: list[int]) -> dict[int]:
-    countmap = defaultdict(int)
-
-    for card in hand_arr:
-        countmap[card] += 1
-
-    return countmap
-
-
-# print(winnerPairOfCards(["♣4", "♥7", "♥7", "♠Q", "♣J"], ["♥7", "♥7", "♣K", "♠Q", "♦2"]))
+print(winnerPairOfCards(["♣4", "♥7", "♥7", "♠Q", "♣J"], ["♥7", "♥7", "♣K", "♠Q", "♦2"]))
