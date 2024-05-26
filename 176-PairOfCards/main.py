@@ -21,18 +21,25 @@ class Card:
 class Hand:
     def __init__(self) -> None:
         self.cards = []
+        self.card_num_count_map = defaultdict(int)
 
     def add(self, card: Card) -> None:
         self.cards.append(card)
+        self.card_num_count_map[card.num] += 1
 
 
 card1 = Card("♦A")
 card2 = Card("♥Q")
+card3 = Card("♦Q")
 hand = Hand()
 hand.add(card1)
 hand.add(card2)
+hand.add(card3)
 for card in hand.cards:
     print(card.suit, card.sign, card.num)
+
+for card_num, count in hand.card_num_count_map.items():
+    print(card_num, count)
 
 
 def winnerPairOfCards(player1: list[str], player2: list[str]) -> str:
