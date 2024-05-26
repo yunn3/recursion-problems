@@ -18,6 +18,23 @@ class Card:
             return int(sign)
 
 
+class Hand:
+    def __init__(self) -> None:
+        self.cards = []
+
+    def add(self, card: Card) -> None:
+        self.cards.append(card)
+
+
+card1 = Card("♦A")
+card2 = Card("♥Q")
+hand = Hand()
+hand.add(card1)
+hand.add(card2)
+for card in hand.cards:
+    print(card.suit, card.sign, card.num)
+
+
 def winnerPairOfCards(player1: list[str], player2: list[str]) -> str:
     player1_hand_arr = generate_int_hand(player1)
     player2_hand_arr = generate_int_hand(player2)
