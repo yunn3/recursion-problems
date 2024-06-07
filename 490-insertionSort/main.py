@@ -1,6 +1,7 @@
 def insertionSort(arr: list[int]) -> list[int]:
+    length = len(arr)
 
-    for i in range(len(arr)):
+    for i in range(length):
         for j in reversed(range(i)):
             if arr[j + 1] < arr[j]:
                 tmp = arr[j + 1]
