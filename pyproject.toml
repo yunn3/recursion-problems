@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "recursion-problems"
+version = "0.1.0"
+description = ""
+authors = ["nonlem <nonlem7432@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+markdown = "^3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
