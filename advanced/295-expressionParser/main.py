@@ -1,7 +1,11 @@
 from typing import Optional, TypeVar, Generic
-
+from re import compile
 
 T = TypeVar("T")
+
+
+def main():
+    pass
 
 
 class Node(Generic[T]):
@@ -43,6 +47,9 @@ def expressionParser(expression: str) -> int:
     operator_stack = Stack[str]()
     length = len(expression)
     ref = length
+
+    if not can_process(expression):
+        return 0
 
     for index in reversed(range(length)):
         if index == 0:
@@ -90,9 +97,29 @@ def calculate(left_operand: int, right_operand: int, operator: str) -> int:
         return left_operand - right_operand
     elif operator == "*":
         return left_operand * right_operand
+    if right_operand == 0:
+        raise ValueError("right must not be zero")
     return left_operand // right_operand
 
 
+def all_clear() -> None:
+    pass
+
+
+def can_process(expression: str) -> bool:
+    REGULAR_EXPRESSION = compile(r"^-*[0-9]+([\+-\/\*]+-*[0-9]+)*$")
+    match = REGULAR_EXPRESSION.match(expression)
+    return match is not None
+
+
+def get_input() -> str:
+    pass
+
+
+if __name__ == "__main__":
+    main()
+
+# テストケース
 print(expressionParser("2+4*6"))  # --> 26
 print(expressionParser("2*3+4"))  # --> 10
 print(expressionParser("3-3+3"))  # --> 3
