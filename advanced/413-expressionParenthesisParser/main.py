@@ -127,7 +127,7 @@ class ExpressionParser:
             return left_operand * right_operand
         if right_operand == 0:
             raise ValueError("right must not be zero")
-        return left_operand // right_operand
+        return int(left_operand / right_operand)
 
     def _is_operator(self, expression: str, index: int) -> bool:
         return (
