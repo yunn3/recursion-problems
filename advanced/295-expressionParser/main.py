@@ -4,10 +4,6 @@ from re import compile
 T = TypeVar("T")
 
 
-def main():
-    pass
-
-
 class Node(Generic[T]):
     def __init__(self, data: T) -> None:
         self.data = data
@@ -40,8 +36,8 @@ def expressionParser(expression: str) -> int:
     OPERATORS = {
         "+": {"priority": 1},
         "-": {"priority": 1},
-        "*": {"priority": 2},
-        "/": {"priority": 2},
+        "*": {"priority": 10},
+        "/": {"priority": 10},
     }
     operand_stack = Stack[int]()
     operator_stack = Stack[str]()
@@ -102,22 +98,11 @@ def calculate(left_operand: int, right_operand: int, operator: str) -> int:
     return left_operand // right_operand
 
 
-def all_clear() -> None:
-    pass
-
-
 def can_process(expression: str) -> bool:
     REGULAR_EXPRESSION = compile(r"^-*[0-9]+([\+-\/\*]+-*[0-9]+)*$")
     match = REGULAR_EXPRESSION.match(expression)
     return match is not None
 
-
-def get_input() -> str:
-    pass
-
-
-if __name__ == "__main__":
-    main()
 
 # テストケース
 print(expressionParser("2+4*6"))  # --> 26
