@@ -80,13 +80,13 @@ def minWindowArrK(intArr: List[int], k: int) -> List[int]:
     result: List[int] = []
     index_dq = Deque[int]()
 
-    def _dequeue_lower_nums(index: int) -> None:
+    def _dequeue_higher_nums(index: int) -> None:
         while (back_index := index_dq.peek_back()) is not None and intArr[
             back_index
-        ] <= intArr[index]:
+        ] >= intArr[index]:
             index_dq.dequeue_back()
 
-    def _append_max_num() -> None:
+    def _append_min_num() -> None:
         front_index = index_dq.peek_front()
         if front_index is not None:
             result.append(intArr[front_index])
@@ -99,13 +99,13 @@ def minWindowArrK(intArr: List[int], k: int) -> List[int]:
             index_dq.dequeue_front()
 
     for index in range(k):
-        _dequeue_lower_nums(index)
+        _dequeue_higher_nums(index)
         index_dq.enqueue_back(index)
 
     for index in range(k, len(intArr)):
-        _append_max_num()
+        _append_min_num()
         _dequeue_out_of_window(index)
-        _dequeue_lower_nums(index)
+        _dequeue_higher_nums(index)
         index_dq.enqueue_back(index)
-    _append_max_num()
+    _append_min_num()
     return result
