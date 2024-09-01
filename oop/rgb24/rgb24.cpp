@@ -24,6 +24,7 @@ class RGB24 {
     return oss.str();
   }
 
+  set_as_black() {}
   string get_color_shade() {
     if (is_gray_scale_()) return "grayscale";
 
