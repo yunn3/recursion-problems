@@ -1,6 +1,5 @@
-#include <array>
+#include <algorithm>
 #include <bitset>
-#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -22,15 +21,22 @@ class RGB24 {
   friend ostream& operator<<(ostream& os, const RGB24& obj);
 
  private:
-  int red_;
-  int green_;
-  int blue_;
+  string rgb_hex_;
 
-  bool is_gray_scale_() const { return red_ == green_ && green_ == blue_; }
+  void parse_rgb_hex_();
+  int get_red_() const;
+  int get_green_() const;
+  int get_blue_() const;
+  bool is_gray_scale_() const;
 };
 
-RGB24::RGB24(int red, int green, int blue)
-    : red_(red), green_(green), blue_(blue) {}
+RGB24::RGB24(int red, int green, int blue) {
+  ostringstream stream;
+  stream << setfill('0') << setw(2) << hex << red;
+  stream << setfill('0') << setw(2) << hex << green;
+  stream << setfill('0') << setw(2) << hex << blue;
+  rgb_hex_ = stream.str();
+}
 
 RGB24::RGB24(string color_code) {
   int length = color_code.size();
@@ -44,19 +50,13 @@ RGB24::RGB24(string color_code) {
   }
 }
 
-string RGB24::get_hex() const {
-  ostringstream stream;
-  stream << setfill('0') << setw(2) << hex << red_;
-  stream << setfill('0') << setw(2) << hex << green_;
-  stream << setfill('0') << setw(2) << hex << blue_;
-  return stream.str();
-}
+string RGB24::get_hex() const { return rgb_hex_; }
 
 string RGB24::get_bits() const {
   ostringstream stream;
-  stream << bitset<8>(red_);
-  stream << bitset<8>(green_);
-  stream << bitset<8>(blue_);
+  stream << bitset<8>(get_red_());
+  stream << bitset<8>(get_green_());
+  stream << bitset<8>(get_blue_());
   return stream.str();
 }
 
@@ -64,7 +64,7 @@ string RGB24::get_color_shade() const {
   if (is_gray_scale_()) return "grayscale";
 
   array<string, 3> color_str_table = {"red", "green", "blue"};
-  array<int, 3> color_values = {red_, green_, blue_};
+  array<int, 3> color_values = {get_red_(), get_green_(), get_blue_()};
   int max_value = color_values[0];
   int max_index = 0;
 
@@ -77,25 +77,15 @@ string RGB24::get_color_shade() const {
   return color_str_table[max_index];
 }
 
-void RGB24::set_as_black() {
-  red_ = 0;
-  green_ = 0;
-  blue_ = 0;
-}
+void RGB24::set_as_black() { rgb_hex_ = "000000"; }
 
 void RGB24::set_color_by_hex(string hex_code) {
   if (hex_code.size() != 6) {
     set_as_black();
     return;
   }
-  array<int*, 3> color_values = {&red_, &green_, &blue_};
-  stringstream ss;
-  for (int i = 0; i < color_values.size(); i++) {
-    ss << hex << hex_code.substr(i * 2, 2);
-    ss >> *(color_values[i]);
-    ss.str("");
-    ss.clear(stringstream::goodbit);
-  }
+  rgb_hex_ = hex_code;
+  transform(rgb_hex_.begin(), rgb_hex_.end(), rgb_hex_.begin(), ::tolower);
 }
 
 void RGB24::set_color_by_bin(string bin_code) {
@@ -103,22 +93,37 @@ void RGB24::set_color_by_bin(string bin_code) {
     set_as_black();
     return;
   }
-  array<int*, 3> color_values = {&red_, &green_, &blue_};
-  for (int i = 0; i < color_values.size(); i++) {
-    *(color_values[i]) = stoi(bin_code.substr(i * 8, 8), nullptr, 2);
+  ostringstream stream;
+  for (int i = 0; i < 3; i++) {
+    int color_value = stoi(bin_code.substr(i * 8, 8), nullptr, 2);
+    stream << setfill('0') << setw(2) << hex << color_value;
   }
+  rgb_hex_ = stream.str();
 }
 
 ostream& operator<<(ostream& os, const RGB24& obj) {
   os << "The color is rgb(";
-  os << obj.red_ << ",";
-  os << obj.green_ << ",";
-  os << obj.blue_ << "), ";
+  os << obj.get_red_() << ", ";
+  os << obj.get_green_() << ", ";
+  os << obj.get_blue_() << "), ";
   os << "Hex: " << obj.get_hex() << ", ";
   os << "Binary: " << obj.get_bits() << " ";
   return os;
 }
 
+int RGB24::get_red_() const { return stoi(rgb_hex_.substr(0, 2), nullptr, 16); }
+
+int RGB24::get_green_() const {
+  return stoi(rgb_hex_.substr(2, 2), nullptr, 16);
+}
+
+int RGB24::get_blue_() const {
+  return stoi(rgb_hex_.substr(4, 2), nullptr, 16);
+}
+
+bool RGB24::is_gray_scale_() const {
+  return get_red_() == get_green_() && get_green_() == get_blue_();
+}
 int main() {
   RGB24 color_1(0, 153, 255);
   RGB24 color_2("ff99cc");

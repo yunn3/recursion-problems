@@ -1,6 +1,6 @@
 #include <ctime>
 #include <iostream>
-#include <ostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -111,15 +111,12 @@ class Person {
         height_m_(height_m),
         weight_kg_(weight_kg),
         birth_year_(birth_year),
-        denom_pref_(highest_first),
-        wallet_(nullptr) {
+        denom_pref_(highest_first) {
     if (initial_money > 0) {
-      wallet_ = new Wallet();
+      wallet_ = make_unique<Wallet>();
       get_paid(initial_money);
     }
   }
-
-  ~Person() { delete wallet_; }
 
   string to_string() const {
     return get_full_name() + ", height_m: " + std::to_string(height_m_) +
@@ -131,14 +128,13 @@ class Person {
     first_name_ = first_name;
     last_name_ = last_name;
   }
-  // Getters
+
   const string& get_first_name() const { return first_name_; }
   const string& get_last_name() const { return last_name_; }
   double get_height_m() const { return height_m_; }
   double get_weight_kg() const { return weight_kg_; }
   int get_birth_year() const { return birth_year_; }
 
-  // Setters
   void set_first_name(const string& first_name) { first_name_ = first_name; }
   void set_last_name(const string& last_name) { last_name_ = last_name; }
   void set_height_m(const double height_m) { height_m_ = height_m; }
@@ -152,20 +148,15 @@ class Person {
   }
 
   int get_cash() const {
-    if (wallet_ == nullptr) return 0;
+    if (!wallet_) return 0;
     return wallet_->get_total_money();
   }
 
-  void add_wallet(Wallet* new_wallet) {
-    delete wallet_;
-    wallet_ = new_wallet;
+  void add_wallet(unique_ptr<Wallet> new_wallet) {
+    wallet_ = std::move(new_wallet);
   }
 
-  Wallet* drop_wallet() {
-    Wallet* old_wallet = wallet_;
-    wallet_ = nullptr;
-    return old_wallet;
-  }
+  unique_ptr<Wallet> drop_wallet() { return std::move(wallet_); }
 
   void set_denomination_preference(DenominationPreference pref) {
     denom_pref_ = pref;
@@ -174,7 +165,7 @@ class Person {
   vector<int> get_paid(int amount) {
     vector<int> bills(6, 0);
 
-    if (wallet_ == nullptr) {
+    if (!wallet_) {
       return bills;
     }
 
@@ -192,7 +183,7 @@ class Person {
   vector<int> spend_money(int amount) {
     vector<int> bills(6, 0);
 
-    if (wallet_ == nullptr) {
+    if (!wallet_) {
       return bills;
     }
 
@@ -227,7 +218,7 @@ class Person {
   double height_m_;
   double weight_kg_;
   int birth_year_;
-  Wallet* wallet_;
+  unique_ptr<Wallet> wallet_;
   DenominationPreference denom_pref_;
 
   string get_full_name() const { return first_name_ + " " + last_name_; }
@@ -340,16 +331,15 @@ int main() {
   cout << "$100 bills: " << spent_bills[5] << endl;
   cout << "Current Money: $" << carly.get_cash() << endl;
 
-  Wallet* new_wallet = new Wallet();
+  auto new_wallet = make_unique<Wallet>();
   new_wallet->insert_bill(10, 5);
-  carly.add_wallet(new_wallet);
+  carly.add_wallet(std::move(new_wallet));
   cout << "Added new wallet with $50." << endl;
   cout << "Current Money: $" << carly.get_cash() << endl;
 
-  Wallet* old_wallet = carly.drop_wallet();
+  auto old_wallet = carly.drop_wallet();
   cout << "Dropped wallet." << endl;
   cout << "Current Money: $" << carly.get_cash() << endl;
-  delete old_wallet;
 
   return 0;
 }

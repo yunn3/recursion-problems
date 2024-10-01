@@ -16,16 +16,16 @@ class RGB24 {
   string get_hex() const;
   string get_bits() const;
   string get_color_shade() const;
-  void set_as_black();
-  void set_color_by_hex(string hex_code);
-  void set_color_by_bin(string bin_code);
+
   friend ostream& operator<<(ostream& os, const RGB24& obj);
 
  private:
   int red_;
   int green_;
   int blue_;
-
+  void set_as_black();
+  void set_color_by_hex(string hex_code);
+  void set_color_by_bin(string bin_code);
   bool is_gray_scale_() const { return red_ == green_ && green_ == blue_; }
 };
 
@@ -131,10 +131,5 @@ int main() {
 
   cout << endl << "Changin the state of colors." << endl;
 
-  gray.set_as_black();
-  cout << gray << endl;
-
-  color_1.set_color_by_hex("2EB656");
-  cout << color_1 << endl;
   return 0;
 }
