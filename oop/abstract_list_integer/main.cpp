@@ -4,6 +4,7 @@
 #include "abstract_list_integer.hpp"
 #include "integer_array_list.hpp"
 #include "integer_linked_list.hpp"
+
 void test_list_integer(AbstractListInteger& int_list) {
   int_list.add(1);
   int_list.add(2);

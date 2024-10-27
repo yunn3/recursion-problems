@@ -1,10 +1,9 @@
 #include <iostream>
 #include <vector>
 
-class MutableString {
- private:
-  std::vector<char> str_;
+using namespace std;
 
+class MutableString {
  public:
   MutableString(const char* init_string) {
     while (*init_string != '\0') {
@@ -55,10 +54,13 @@ class MutableString {
 
   void print() const {
     for (char character : str_) {
-      std::cout << character;
+      cout << character;
     }
-    std::cout << std::endl;
+    cout << endl;
   }
+
+ private:
+  vector<char> str_;
 };
 
 int main() {

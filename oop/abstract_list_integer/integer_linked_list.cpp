@@ -12,7 +12,7 @@ IntegerLinkedList::IntegerLinkedList(const std::vector<int>& arr)
 }
 
 int IntegerLinkedList::get(int position) const {
-  if (position < 0 || position >= static_cast<int>(data.size())) {
+  if (position < 0 || position >= data.size()) {
     throw std::out_of_range("Index out of bounds");
   }
   auto it = data.begin();
@@ -36,7 +36,7 @@ int IntegerLinkedList::pop() {
 }
 
 void IntegerLinkedList::add_at(int position, int element) {
-  if (position < 0 || position > static_cast<int>(data.size())) {
+  if (position < 0 || position > data.size()) {
     throw std::out_of_range("Index out of bounds");
   }
   auto it = data.begin();
@@ -45,7 +45,7 @@ void IntegerLinkedList::add_at(int position, int element) {
 }
 
 void IntegerLinkedList::add_at(int position, const std::vector<int>& elements) {
-  if (position < 0 || position > static_cast<int>(data.size())) {
+  if (position < 0 || position > data.size()) {
     throw std::out_of_range("Index out of bounds");
   }
   auto it = data.begin();
@@ -54,7 +54,7 @@ void IntegerLinkedList::add_at(int position, const std::vector<int>& elements) {
 }
 
 int IntegerLinkedList::remove_at(int position) {
-  if (position < 0 || position >= static_cast<int>(data.size())) {
+  if (position < 0 || position >= data.size()) {
     throw std::out_of_range("Index out of bounds");
   }
   auto it = data.begin();
@@ -65,7 +65,7 @@ int IntegerLinkedList::remove_at(int position) {
 }
 
 void IntegerLinkedList::remove_all_at(int start) {
-  if (start < 0 || start > static_cast<int>(data.size())) {
+  if (start < 0 || start > data.size()) {
     throw std::out_of_range("Index out of bounds");
   }
   auto it = data.begin();
@@ -74,7 +74,7 @@ void IntegerLinkedList::remove_all_at(int start) {
 }
 
 void IntegerLinkedList::remove_all_at(int start, int end) {
-  if (start < 0 || end > static_cast<int>(data.size()) || start > end) {
+  if (start < 0 || end > data.size() || start > end) {
     throw std::out_of_range("Invalid range");
   }
   auto it_start = data.begin();
@@ -86,7 +86,7 @@ void IntegerLinkedList::remove_all_at(int start, int end) {
 
 std::unique_ptr<AbstractListInteger> IntegerLinkedList::sub_list(
     int start) const {
-  if (start < 0 || start > static_cast<int>(data.size())) {
+  if (start < 0 || start > data.size()) {
     throw std::out_of_range("Index out of bounds");
   }
   auto it = data.begin();
@@ -97,7 +97,7 @@ std::unique_ptr<AbstractListInteger> IntegerLinkedList::sub_list(
 
 std::unique_ptr<AbstractListInteger> IntegerLinkedList::sub_list(
     int start, int end) const {
-  if (start < 0 || end > static_cast<int>(data.size()) || start > end) {
+  if (start < 0 || end > data.size() || start > end) {
     throw std::out_of_range("Invalid range");
   }
   auto it_start = data.begin();
@@ -112,7 +112,7 @@ std::vector<int> IntegerLinkedList::to_vector() const {
   return std::vector<int>(data.begin(), data.end());
 }
 
-int IntegerLinkedList::size() const { return static_cast<int>(data.size()); }
+int IntegerLinkedList::size() const { return data.size(); }
 
 void IntegerLinkedList::add_at(int index, const AbstractListInteger& elements) {
   std::vector<int> vec_elements = elements.to_vector();
