@@ -19,19 +19,25 @@ class BinarySearchTree {
 public:
   std::unique_ptr<BinaryTree> root;
 
+  BinarySearchTree();
   BinarySearchTree(const std::vector<int> &values);
 
-  const BinaryTree *search(int key);
-  bool KeyExists(int key);
+  void insert(int value);
+  void print_inorder();
 
+  const BinaryTree *search(int key);
+  bool key_exists(int key);
   int height();
 
 private:
-  std::unique_ptr<BinaryTree>
-  buildBalancedBST(const std::vector<int> &sorted_values, int start, int end);
-  const BinaryTree *searchRecursive(const BinaryTree *node, int key);
+  void insert_recursive(std::unique_ptr<BinaryTree> &node, int value);
+  void print_inorder_recursive(const BinaryTree *node);
 
-  int heightRecursive(const BinaryTree *node);
+  std::unique_ptr<BinaryTree>
+  build_balanced_bst(const std::vector<int> &sorted_values, int start, int end);
+  const BinaryTree *search_recursive(const BinaryTree *node, int key);
+
+  int height_recursive(const BinaryTree *node);
 };
 
 #endif
